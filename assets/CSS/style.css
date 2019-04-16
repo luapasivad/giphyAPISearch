@@ -22,3 +22,16 @@
     height: 100%;
     position: fixed;
 }
+
+@media screen and (max-width: 576px) {
+    #button-div {
+        position: static;
+        margin-top: 0
+    }
+    #button {
+        width: auto;
+    }
+    #gif-div {
+        margin-left: 0;
+    }
+}
