@@ -44,10 +44,23 @@ $(document).ready(function() {
             method: "GET"
             }).then(function(response) {
                 for (var i=0; i<10; i++) { // takes all 10 results
-                    var gifPicture = response.data[i].images.downsized_medium.url
+                    var gifPicture = response.data[i].images.downsized.url
+                        
+                    $('<div></div>')
+                        .attr('id', 'gifContainer')
+                        .attr('class', 'hover')
+                        .prependTo( $(gifDiv) )
+
+                    $('<div>hihihi</div>')
+                        .attr('id', 'gifText')
+                        .prependTo( $('#gifContainer') )
+
                     $('<img>') // prepends them to the screen
                         .attr('src', gifPicture)
-                        .prependTo( $(gifDiv) )
+                        .attr('class', 'img-fluid')
+                        .attr('id', 'gif')
+                        .prependTo( $('#gifContainer') )
+                
                 }
             })
         }
@@ -69,5 +82,8 @@ $(document).ready(function() {
         }
     })
 
-    
+    $('div.hover').mouseover(function() {
+       console.log('hi')
+        
+    })
 })

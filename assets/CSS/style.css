@@ -1,3 +1,13 @@
+#search-div {
+    padding-top: 15px;
+}
+
+#button-div {
+    margin-top: 69px;
+    padding-bottom: 10px;
+    height: 100%;
+    position: fixed;
+}
 #button {
     text-transform: capitalize;
     margin: 7px 3px 0 3px;
@@ -5,23 +15,46 @@
     width: 98%;
 }
 
-#button:last-child {
-    margin-bottom: 15px;
-}
-
-#search-div {
-    padding-top: 15px;
-}
-
 #gif-div {
     margin-left: 25%;
+    text-align: center;
 }
 
-#button-div {
-    margin-top: 69px;
-    height: 100%;
-    position: fixed;
+#gif {
+    padding: 5px;
+    width: 100%;
 }
+
+#gif:hover {
+    background-color: black;
+    opacity: .3;
+}
+
+#gifContainer {
+    width: 85%;
+    margin: auto;
+    position: relative;
+}
+
+#gifText {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    z-index: 100;
+    display: none;
+
+}
+
+#gifTextFade {
+    animation: fadein 2s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
 
 @media screen and (max-width: 576px) {
     #button-div {
@@ -29,9 +62,13 @@
         margin-top: 0
     }
     #button {
+        text-align: center;
         width: auto;
     }
     #gif-div {
         margin-left: 0;
+    }
+    #button:last-child {
+        margin-bottom: 0;
     }
 }
