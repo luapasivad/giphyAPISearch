@@ -1,12 +1,17 @@
-button {
+#button {
     text-transform: capitalize;
-    margin: 3px;
+    margin: 10px;
+    font-size: 14px;
 }
 
-button:first-child {
+#button:first-child {
     margin-top: 20px;
 }
 
-button:last-child {
+#button:last-child {
     margin-bottom: 20px;
+}
+
+#search-div {
+    padding-top: 15px;
 }
