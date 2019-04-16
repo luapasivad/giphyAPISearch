@@ -2,6 +2,7 @@ $(document).ready(function() {
 
     var buttonsArr = [],
         buttonDiv = $('#button-div')
+        gifDiv = $('#gif-div')
         // button = $('#button') // not sure if necessary
 
 
@@ -29,31 +30,44 @@ $(document).ready(function() {
             .attr('type', 'submit')
             .attr('data-nameFull', titleDisplay)
             .attr('id', 'button')
-            .attr('class', 'btn btn-primary btn-sm btn-block')
-            .appendTo( $(buttonDiv) );
+            .attr('class', 'btn btn-primary btn-sm')
+            .prependTo( $(buttonDiv) );
         }
     }
 
-
-    $('#button-div').on('click', 'button', function() {
-        // console.log($(this).attr('data-nameFull'))
-        var toSearch = $(this).attr('data-nameFull'),
-            queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=d0oobYxRk095EpbUG3rFBW8diHv0ioio&q=' + toSearch +'&limit=10&offset=0&rating=G&lang=en'
-        
-        $.ajax({ // ajax call for defaiult buttons
+    function findGif(string) {
+        var toSearch = string // sets the dynamic api link
+        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=d0oobYxRk095EpbUG3rFBW8diHv0ioio&q=' + toSearch +'&limit=10&offset=0&rating=G&lang=en'
+            
+        $.ajax({ // ajax call for user made buttons
             url: queryURL,
             method: "GET"
             }).then(function(response) {
-                console.log(response)
+                for (var i=0; i<10; i++) { // takes all 10 results
+                    var gifPicture = response.data[i].images.downsized_medium.url
+                    $('<img>') // prepends them to the screen
+                        .attr('src', gifPicture)
+                        .prependTo( $(gifDiv) )
+                }
             })
-    })
+        }
 
-    $('#search-div').on('click', 'button', function() {
+    $('#button-div').on('click', 'button', function() { // original buttons
+        findGif( $(this).attr('data-nameFull'))
+    })
+        // console.log($(this).attr('data-nameFull'))
+
+    $('#search-div').on('click', 'button', function() { // user made buttons
         var userSearch = $('#userSearch')
         var search = userSearch.val()
 
-        console.log(search)
-        userSearch.val("") // clear text box
+        if (search.length != "") {
+            buttonCreate(search)
+            findGif(search)
+            console.log(search)
+            userSearch.val("") // clear text box
+        }
     })
 
+    
 })
