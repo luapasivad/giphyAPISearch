@@ -1,0 +1,12 @@
+button {
+    text-transform: capitalize;
+    margin: 3px;
+}
+
+button:first-child {
+    margin-top: 20px;
+}
+
+button:last-child {
+    margin-bottom: 20px;
+}
