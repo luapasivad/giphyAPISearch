@@ -46,48 +46,50 @@ $(document).ready(function() {
             }).then(function(response) {
                 for (var i=0; i<10; i++) { // takes all 10 results
                     console.log(response)
-                    var gifPicture = response.data[i].images.downsized.url
-                    var stillPicture = response.data[i].images.downsized_still.url
-                    var gifName = response.data[i].title.replace(/ GIF.*$/i, "");
+                    var gifPicture = response.data[i].images.downsized.url // moving URL
+                    var stillPicture = response.data[i].images.downsized_still.url // still URL
+                    var gifName = response.data[i].title.replace(/ GIF.*$/i, ""); // gif title with end cut off
                     var userGif;
 
-                    if (response.data[i].username != "") {
-                        userGif = response.data[i].username
-                        console.log('done')
+                    if (response.data[i].username != "") { // needs work
+                        userGif = " - " + response.data[i].username
+                    } else {
+                        userGif = ""
                     }
     
 
-                    // ! make user fade stored specific to the image div
 
-                    $('<div>')
-                        .attr('id', 'gifContainer')
-                        .attr('class', 'gif')
-                        .attr('data-user', userGif)
+                    $('<div>') // container holding each gif and its info
+                        .attr('id', 'gifContainer') // targeting
+                        .attr('class', 'gif') // styling
                         .prependTo( $(gifDiv) )
 
-                    $('<div>')
-                        .attr('id', 'gifText')
-                        .text(gifName +' - '+ userGif)
-                        .prependTo( $('#gifContainer') )
+                    $('<div>') // text placed within container
+                        .attr('id', 'gifText') // targeting & styling
+                        .text(gifName + userGif) // title - user
+                        .prependTo( $('#gifContainer') ) // 
 
                     $('<img>') // prepends them to the screen
-                        .attr('src', gifPicture)
-                        .attr('class', 'img-fluid')
-                        .attr('data-animate', gifPicture)
-                        .attr('data-still', stillPicture)
-                        .attr('data-state', 'animate')
-                        .attr('id', 'gif')
+                        .attr('src', gifPicture) // picture viewed
+                        .attr('class', 'img-fluid') // responsive img
+                        .attr('data-animate', gifPicture) // data animate URL
+                        .attr('data-still', stillPicture) // data still URL
+                        .attr('data-state', 'animate') // current state
+                        .attr('id', 'gif') // styiling
                         .prependTo( $('#gifContainer') )
                 
                 }
             })
         }
 
+    //this onClick function will pass the buttons attrivute 'data-nameFull'
+    //into our search function and produce results
     $('#button-div').on('click', 'button', function() { // original buttons
         findGif( $(this).attr('data-nameFull'))
     })
-        // console.log($(this).attr('data-nameFull'))
 
+    //this onClick function will take anything in the search bar and
+    //pass it into both the search and produce functions
     $('#search-div').on('click', 'button', function() { // user made buttons
         var userSearch = $('#userSearch')
         var search = userSearch.val()
@@ -98,35 +100,24 @@ $(document).ready(function() {
             console.log(search)
             userSearch.val("") // clear text box
         }
-    })
-    
+    })    
 
-    var hoverTimeout;
-    var current;
-
-    // $(document.body).on('mouseenter', ('#gifContainer'), function() {
-    //    current = $(this)
-    //     // $(this).children('div').fadeIn()
-    //     hoverTimeout = setTimeout(function() {
-    //         current.addClass('gifOnHover')
-    //         current.children('div').fadeIn()
-    //         console.log('hi')
-    //     }, 1000)
-    // })
-
-    
-
+    //this click function will operate everything that happens when you
+    //click on an individual picture
     $(document.body).on('click', ('#gifContainer'), function() {
-        console.log($(this).attr('data-url'))
-        $(this).children('img').addClass('gifOnClick')
-        $(this).children('img').attr('src', $(this).children('img').attr('data-still'))
-        $(this).children('div').fadeIn()
-        console.log('hi')
+        console.log($(this).attr('data-url')) // saving for URL
+        $(this).children('img').addClass('gifOnClick') // fadeOut animation
+        $(this).children('img').attr('data-state', 'still') // changes state
+        $(this).children('img').attr('src', $(this).children('img').attr('data-still')) // stops the gif
+        $(this).children('div').fadeIn() // display text (title and author)
     })
 
+    //when the user moves their mouse away or simply clicks elsewhere (mobile),
+    //it executes this
     $(document.body).on('mouseleave', ('#gifContainer'), function() {
-        $(this).children('img').attr('src', $(this).children('img').attr('data-animate'))
-        $(this).children('img').removeClass('gifOnClick')
-        $(this).children('div').fadeOut(0)
+        $(this).children('img').attr('src', $(this).children('img').attr('data-animate')) // reanimate
+        $(this).children('img').attr('data-state', 'animate') // changes state
+        $(this).children('img').removeClass('gifOnClick') // no longer see through
+        $(this).children('div').fadeOut(0) // text disappears
     })
 })
