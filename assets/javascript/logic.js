@@ -105,12 +105,26 @@ $(document).ready(function() {
     //this click function will operate everything that happens when you
     //click on an individual picture
     $(document.body).on('click', ('#gifContainer'), function() {
+        
+        if ($(this).children('img').attr('data-state')=='still') { // if the image has already been clicked
+            $(this).children('img')
+                .attr('src', $(this).children('img').attr('data-animate')) // reanimate
+                .attr('data-state', 'animate') // changes state
+                .removeClass('gifOnClick') // no longer see through
+            $(this).children('div').fadeOut(0) // text disappears 
+ 
+        } else { // if the image has not been clicked already
+        
         console.log($(this).attr('data-url')) // saving for URL
-        $(this).children('img').addClass('gifOnClick') // fadeOut animation
-        $(this).children('img').attr('data-state', 'still') // changes state
-        $(this).children('img').attr('src', $(this).children('img').attr('data-still')) // stops the gif
+        $(this).children('img')
+            .attr('src', $(this).children('img').attr('data-still')) // stops the gif
+            .addClass('gifOnClick') // fadeOut animation
+            .attr('data-state', 'still') // changes state
         $(this).children('div').fadeIn() // display text (title and author)
+
+        }
     })
+
 
     //when the user moves their mouse away or simply clicks elsewhere (mobile),
     //it executes this
