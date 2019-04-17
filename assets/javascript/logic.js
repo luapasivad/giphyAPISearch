@@ -10,6 +10,7 @@ $(document).ready(function() {
         url: 'https://api.giphy.com/v1/gifs/trending?api_key=d0oobYxRk095EpbUG3rFBW8diHv0ioio&limit=10&rating=G', // static URL - pulls first 15 trending pictures
         method: "GET"
         }).then(function(response) {
+            console.log(response) // for test
             for (var i=0; i<10; i++) {
                 var title = response.data[i].title // get the title for each picture
                 buttonCreate(title)
@@ -44,21 +45,37 @@ $(document).ready(function() {
             method: "GET"
             }).then(function(response) {
                 for (var i=0; i<10; i++) { // takes all 10 results
+                    console.log(response)
                     var gifPicture = response.data[i].images.downsized.url
-                        
-                    $('<div></div>')
+                    var gifName = response.data[i].title
+                    var userGif;
+
+                    if (response.data[i].username != "") {
+                        userGif = response.data[i].username
+                        console.log('done')
+                    }
+    
+
+                    // ! make user fade stored specific to the image div
+
+                    $('<div>')
                         .attr('id', 'gifContainer')
-                        .attr('class', 'hover')
+                        .attr('class', 'gif')
+                        .attr('data-user', userGif)
                         .prependTo( $(gifDiv) )
 
-                    $('<div>hihihi</div>')
+                    $('<div>')
                         .attr('id', 'gifText')
+                        .attr('class', 'gif')
+                        .text(userGif)
                         .prependTo( $('#gifContainer') )
 
                     $('<img>') // prepends them to the screen
                         .attr('src', gifPicture)
                         .attr('class', 'img-fluid')
+                        .attr('data-url', gifPicture)
                         .attr('id', 'gif')
+                        .text('hi')
                         .prependTo( $('#gifContainer') )
                 
                 }
@@ -81,9 +98,19 @@ $(document).ready(function() {
             userSearch.val("") // clear text box
         }
     })
+    
+    $(document.body).on('mouseenter', ('#gifContainer'), function() {
+        $(this).children('div').fadeIn()
+        console.log('hi')
 
-    $('div.hover').mouseover(function() {
-       console.log('hi')
-        
     })
+    $(document.body).on('mouseleave', ('#gifContainer'), function() {
+        console.log('bye')
+        $(this).children('div').fadeOut(0)
+    })
+
+    $(document.body).on('click', 'img', function() {
+        console.log($(this).attr('data-url'))
+    })
+    
 })

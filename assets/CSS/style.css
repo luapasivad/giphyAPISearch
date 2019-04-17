@@ -27,13 +27,16 @@
 
 #gif:hover {
     background-color: black;
-    opacity: .3;
+    opacity: .1;
+    display: block;
 }
 
 #gifContainer {
-    width: 85%;
+    width: auto;
     margin: auto;
+    margin-top: 5px;
     position: relative;
+    z-index: 1000;
 }
 
 #gifText {
@@ -41,20 +44,9 @@
     bottom: 25px;
     left: 25px;
     z-index: 100;
+    /* visibility: hidden; */
     display: none;
-
 }
-
-#gifTextFade {
-    animation: fadein 2s;
-}
-
-@keyframes fadein {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-
 
 @media screen and (max-width: 576px) {
     #button-div {
