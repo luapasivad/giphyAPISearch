@@ -25,6 +25,24 @@
     width: 100%;
 }
 
+#gifContainer {
+    width: auto;
+    margin: auto;
+    margin-top: 5px;
+    position: relative;
+    z-index: 1;
+}
+
+#gifText {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    z-index: 100;
+    opacity: .8;
+    /* visibility: hidden; */
+    display: none;
+}
+
 .gifOnClick {
     -webkit-animation: fadeOut 0.5s;
     -moz-animation: fadeOut 0.5s;
@@ -60,22 +78,9 @@
     }
 }
 
-#gifContainer {
-    width: auto;
-    margin: auto;
-    margin-top: 5px;
-    position: relative;
-    z-index: 1;
-}
-
-#gifText {
-    position: absolute;
-    bottom: 25px;
-    left: 25px;
-    z-index: 100;
-    opacity: .8;
-    /* visibility: hidden; */
-    display: none;
+.tutorial {
+    width: 200px;
+    height: 200px;
 }
 
 @media screen and (max-width: 576px) {
