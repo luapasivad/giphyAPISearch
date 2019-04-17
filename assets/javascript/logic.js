@@ -7,7 +7,7 @@ $(document).ready(function() {
 
 
     $.ajax({ // ajax call for default buttons
-        url: 'https://api.giphy.com/v1/gifs/trending?api_key=d0oobYxRk095EpbUG3rFBW8diHv0ioio&limit=10&rating=G', // static URL - pulls first 15 trending pictures
+        url: 'https://api.giphy.com/v1/gifs/trending?api_key=RKxTO3lSjjLNbawYu2mYoLiRuU76x6iO&limit=10&rating=G', // static URL - pulls first 15 trending pictures
         method: "GET"
         }).then(function(response) {
             console.log(response) // for test
@@ -38,7 +38,7 @@ $(document).ready(function() {
 
     function findGif(string) {
         var toSearch = string // sets the dynamic api link
-        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=d0oobYxRk095EpbUG3rFBW8diHv0ioio&q=' + toSearch +'&limit=10&offset=0&rating=G&lang=en'
+        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=RKxTO3lSjjLNbawYu2mYoLiRuU76x6iO&q=' + toSearch +'&limit=10&offset=0&rating=G&lang=en'
             
         $.ajax({ // ajax call for user made buttons
             url: queryURL,
@@ -111,6 +111,8 @@ $(document).ready(function() {
 
     $(document.body).on('click', 'img', function() {
         console.log($(this).attr('data-url'))
+        $(this).children('div').fadeIn()
+        console.log('hi')
     })
     
 })
