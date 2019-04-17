@@ -47,7 +47,8 @@ $(document).ready(function() {
                 for (var i=0; i<10; i++) { // takes all 10 results
                     console.log(response)
                     var gifPicture = response.data[i].images.downsized.url
-                    var gifName = response.data[i].title
+                    var stillPicture = response.data[i].images.downsized_still.url
+                    var gifName = response.data[i].title.replace(/ GIF.*$/i, "");
                     var userGif;
 
                     if (response.data[i].username != "") {
@@ -66,16 +67,16 @@ $(document).ready(function() {
 
                     $('<div>')
                         .attr('id', 'gifText')
-                        .attr('class', 'gif')
-                        .text(userGif)
+                        .text(gifName +' - '+ userGif)
                         .prependTo( $('#gifContainer') )
 
                     $('<img>') // prepends them to the screen
                         .attr('src', gifPicture)
                         .attr('class', 'img-fluid')
-                        .attr('data-url', gifPicture)
+                        .attr('data-animate', gifPicture)
+                        .attr('data-still', stillPicture)
+                        .attr('data-state', 'animate')
                         .attr('id', 'gif')
-                        .text('hi')
                         .prependTo( $('#gifContainer') )
                 
                 }
@@ -99,20 +100,33 @@ $(document).ready(function() {
         }
     })
     
-    $(document.body).on('mouseenter', ('#gifContainer'), function() {
+
+    var hoverTimeout;
+    var current;
+
+    // $(document.body).on('mouseenter', ('#gifContainer'), function() {
+    //    current = $(this)
+    //     // $(this).children('div').fadeIn()
+    //     hoverTimeout = setTimeout(function() {
+    //         current.addClass('gifOnHover')
+    //         current.children('div').fadeIn()
+    //         console.log('hi')
+    //     }, 1000)
+    // })
+
+    
+
+    $(document.body).on('click', ('#gifContainer'), function() {
+        console.log($(this).attr('data-url'))
+        $(this).children('img').addClass('gifOnClick')
+        $(this).children('img').attr('src', $(this).children('img').attr('data-still'))
         $(this).children('div').fadeIn()
         console.log('hi')
-
     })
+
     $(document.body).on('mouseleave', ('#gifContainer'), function() {
-        console.log('bye')
+        $(this).children('img').attr('src', $(this).children('img').attr('data-animate'))
+        $(this).children('img').removeClass('gifOnClick')
         $(this).children('div').fadeOut(0)
     })
-
-    $(document.body).on('click', 'img', function() {
-        console.log($(this).attr('data-url'))
-        $(this).children('div').fadeIn()
-        console.log('hi')
-    })
-    
 })
