@@ -9,7 +9,7 @@ $(document).ready(function() {
 
 
     $.ajax({ // ajax call for default buttons
-        url: 'https://api.giphy.com/v1/gifs/trending?api_key=iUxtIFwExyAwP5SO88cIsiR0vlJqdLvX&limit=7&rating=G', // static URL - pulls first 15 trending pictures
+        url: 'https://api.giphy.com/v1/gifs/trending?api_key=Lov6CGSo4WAXfZ6LrZX6co5fYJ0w7e5q&limit=7&rating=G', // static URL - pulls first 15 trending pictures
         method: "GET"
         }).then(function(starterButtons) {
             console.log(starterButtons) // for test
@@ -30,7 +30,7 @@ $(document).ready(function() {
         $('<button>')
             .text( titleDisplay ) // .attr('data-name', tempTitleSplit[0])
             .attr('type', 'submit')
-            .attr('data-nameFull', titleDisplay)
+            .attr('data-title', titleDisplay)
             .attr('id', 'button')
             .attr('data-pushCount', 0)
             .attr('class', 'btn btn-primary btn-sm')
@@ -42,7 +42,7 @@ $(document).ready(function() {
 
         var toSearch = string // sets the dynamic api link
         var offset = tempCount * 10 // used to offset search when a button is used again
-        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=iUxtIFwExyAwP5SO88cIsiR0vlJqdLvX&q=' + toSearch +'&limit=10&offset='+ offset +'&rating=G&lang=en'
+        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=Lov6CGSo4WAXfZ6LrZX6co5fYJ0w7e5q&q=' + toSearch +'&limit=10&offset='+ offset +'&rating=G&lang=en'
         var gifTarget;
         var tutorial = false; // has the tutorial run
         
@@ -105,17 +105,19 @@ $(document).ready(function() {
                             .attr('id', 'moreContent') // targetting
                             .attr('data-searched', string) // the last thing searched
                             .attr('class', 'btn btn-primary btn-block btn-sm') // button styling
+                            .attr('data-pushCount', 10)
                             .text("find more of " + string) // text
-                            .appendTo('#gif-div') }, 2000)
+                            .appendTo('#gif-div') 
+                        }, 2000)
 
         }
 
-    //this onClick function will pass the buttons attrivute 'data-nameFull'
+    //this onClick function will pass the buttons attrivute 'data-title'
     //into our search function and produce results
-    $('#button-div').on('click', 'button', function() {// original buttons
+    buttonDiv.on('click', 'button', function() {// original buttons
         tempCount =  parseInt($(this).attr('data-pushCount')) // this updates a buttons count as to how many times it has been pressed
-        $(this).attr('data-pushCount', tempCount++) // this intervals our tempCount and updates the buttons pushcount
-        findGif( $(this).attr('data-nameFull')) // calls function to find the GIFs
+        $(this).attr('data-pushCount', tempCount + 1) // this intervals our tempCount and updates the buttons pushcount
+        findGif( $(this).attr('data-title')) // calls function to find the GIFs
     })
 
     //this onClick function will take anything in the search bar and
@@ -144,12 +146,11 @@ $(document).ready(function() {
  
         } else { // if the image has not been clicked already
         
-        console.log($(this).attr('data-url')) // saving for URL
-        $(this).children('img')
-            .attr('src', $(this).children('img').attr('data-still')) // stops the gif
-            .addClass('gifOnClick') // fadeOut animation
-            .attr('data-state', 'still') // changes state
-        $(this).children('.gifText').fadeIn() // display text (title and author)
+            $(this).children('img')
+                .attr('src', $(this).children('img').attr('data-still')) // stops the gif
+                .addClass('gifOnClick') // fadeOut animation
+                .attr('data-state', 'still') // changes state
+            $(this).children('.gifText').fadeIn() // display text (title and author)
 
         }
     })
@@ -162,6 +163,13 @@ $(document).ready(function() {
             .attr('data-state', 'animate') // changes state
             .removeClass('gifOnClick') // no longer see through
         $(this).children('.gifText').fadeOut(0) // text disappears
+    })
+
+    gifDiv.on('click', $(('#moreContent')), function() {
+        tempCount =  parseInt($('#moreContent').attr('data-pushCount')) // this updates a buttons count as to how many times it has been pressed
+        $('#moreContent').attr('data-pushCount', tempCount + 1) // this intervals our tempCount and updates the buttons pushcount
+        console.log(tempCount)
+        findGif( $('#moreContent').attr('data-searched')) // calls function to find the GIFs
     })
         
 })
