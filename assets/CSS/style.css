@@ -18,26 +18,28 @@
 #gif-div {
     margin-left: 25%;
     text-align: center;
+    min-height: 100%;
 }
 
-#gif {
+.gif {
     padding: 5px;
     width: 100%;
 }
 
-#gifContainer {
+.gifContainer {
     width: auto;
     margin: auto;
     margin-top: 5px;
+    padding: 5px;
     position: relative;
     z-index: 1;
 }
 
-#gifText {
+.gifText {
     position: absolute;
     bottom: 25px;
     left: 25px;
-    z-index: 100;
+    z-index: 10000;
     opacity: .8;
     /* visibility: hidden; */
     display: none;
@@ -49,6 +51,11 @@
     -o-animation: fadeOut 0.5s;
     animation: fadeOut 0.5s;
     opacity: .1;
+    border: black 3px solid
+}
+
+#moreContent {
+    margin-bottom: 10px;
 }
 
 @-moz-keyframes fadeOut {
@@ -57,6 +64,7 @@
     }
     100% {
         opacity: .1;
+        border: black 3px solid
     }
 }
 
@@ -66,6 +74,7 @@
     }
     100% {
         opacity: .1;
+        border: black 3px solid
     }
 }
 
@@ -75,13 +84,11 @@
     }
     100% {
         opacity: .1;
+        border: black 3px solid
     }
 }
 
-.tutorial {
-    width: 200px;
-    height: 200px;
-}
+
 
 @media screen and (max-width: 576px) {
     #button-div {
