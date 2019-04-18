@@ -4,7 +4,7 @@ $(document).ready(function() {
         buttonDiv = $('#button-div'),
         gifDiv = $('#gif-div'),
         tempCount = 0,
-        apiKey = "r9OrQtK68CnQURkqkSv08e9IZm7QKKmV";
+        apiKey = "ndbwFLDCgCF2OFf18Ngskc2e069zKEFT";
 
     var lastButtonPushed = "";
 
@@ -37,7 +37,7 @@ $(document).ready(function() {
             .attr('id', 'button')
             .attr('data-pushCount', 0)
             .attr('class', 'btn btn-primary btn-sm')
-            .prependTo( $(buttonDiv) );
+            .appendTo( $(buttonDiv) );
         }
     }
 
@@ -69,10 +69,17 @@ $(document).ready(function() {
                         gifTarget = response.data[i].id
                     var gifUser;
 
-                    if (response.data[i].username != "") { // needs work
+
+                    if (response.data[i].title != "") { // if there is no title
+                        gifName =  response.data[i].title
+                    } else {
+                        gifName = "untitled"
+                    }
+
+                    if (response.data[i].username != "") { // if there is no user
                         gifUser = "by " + response.data[i].username
                     } else {
-                        gifUser = ""
+                        gifUser = "by unknown"
                     }
 
                     $('<div>') // container holding each gif and its info
@@ -89,15 +96,17 @@ $(document).ready(function() {
                         .prependTo( $('#' + gifTarget) )
 
                     $('<div>') // text placed within container
+                        .attr('class', 'gifText user') // targeting & styling
+                        .html(gifUser) // title - user
+                        .prependTo( $('#' + gifTarget) ) // 
+
+                    $('<div>') // text placed within container
                         .attr('class', 'gifText title') // targeting & styling
                         .attr('data-title', gifName)
                         .html(gifName) // title - user
                         .prependTo( $('#' + gifTarget) ) // 
                     
-                    $('<div>') // text placed within container
-                        .attr('class', 'gifText user') // targeting & styling
-                        .html(gifUser) // title - user
-                        .prependTo( $('#' + gifTarget) ) // 
+                    
                     
                 }
             })
@@ -176,11 +185,16 @@ $(document).ready(function() {
     //content is loaded
     gifDiv.on('click', 'button', function() {
         findGif( $('#moreContent').attr('data-searched')) // calls function to find the GIFs
-        tempCount=tempCount+1
-        if (lastButtonPushed === $(this).attr('data-searched')) {
-            $('[data-title="'+lastButtonPushed+'"').attr('data-pushCount', tempCount)
-        }
+        tempCount=tempCount+1 // incrememnt tempCount
+        // if (lastButtonPushed === $(this).attr('data-searched')) { 
+        $('[data-title="'+lastButtonPushed+'"').attr('data-pushCount', tempCount)
+        // }
         $(this).remove()
+    })
+
+    gifDiv.on('click', '.title', function() {
+        findGif($(this).text().replace(/ GIF.*$/i, ""))
+        tempCount = tempCount + 1
     })
         
 })
