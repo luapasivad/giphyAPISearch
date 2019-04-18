@@ -2,7 +2,8 @@ $(document).ready(function() {
 
     var buttonsArr = [],
         buttonDiv = $('#button-div'),
-        gifDiv = $('#gif-div')
+        gifDiv = $('#gif-div'),
+        tempCount;
 
         // button = $('#button') // not sure if necessary
 
@@ -31,6 +32,7 @@ $(document).ready(function() {
             .attr('type', 'submit')
             .attr('data-nameFull', titleDisplay)
             .attr('id', 'button')
+            .attr('data-pushCount', 0)
             .attr('class', 'btn btn-primary btn-sm')
             .prependTo( $(buttonDiv) );
         }
@@ -39,7 +41,8 @@ $(document).ready(function() {
     function findGif(string) {
 
         var toSearch = string // sets the dynamic api link
-        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=iUxtIFwExyAwP5SO88cIsiR0vlJqdLvX&q=' + toSearch +'&limit=10&offset=0&rating=G&lang=en'
+        var offset = tempCount * 10 // used to offset search when a button is used again
+        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key=iUxtIFwExyAwP5SO88cIsiR0vlJqdLvX&q=' + toSearch +'&limit=10&offset='+ offset +'&rating=G&lang=en'
         var gifTarget;
         var tutorial = false; // has the tutorial run
         
@@ -59,12 +62,12 @@ $(document).ready(function() {
                     var stillPicture = response.data[i].images.downsized_still.url // still URL
                     var gifName = response.data[i].title.replace(/ GIF.*$/i, ""); // gif title with end cut off
                         gifTarget = response.data[i].id
-                    var userGif;
+                    var gifUser;
 
                     if (response.data[i].username != "") { // needs work
-                        userGif = " - " + response.data[i].username
+                        gifUser = "by " + response.data[i].username
                     } else {
-                        userGif = ""
+                        gifUser = ""
                     }
 
                     $('<div>') // container holding each gif and its info
@@ -81,8 +84,14 @@ $(document).ready(function() {
                         .prependTo( $('#' + gifTarget) )
 
                     $('<div>') // text placed within container
-                        .attr('class', 'gifText') // targeting & styling
-                        .html(gifName + userGif) // title - user
+                        .attr('class', 'gifText title') // targeting & styling
+                        .attr('data-title', gifName)
+                        .html(gifName) // title - user
+                        .prependTo( $('#' + gifTarget) ) // 
+                    
+                    $('<div>') // text placed within container
+                        .attr('class', 'gifText user') // targeting & styling
+                        .html(gifUser) // title - user
                         .prependTo( $('#' + gifTarget) ) // 
                     
                 }
@@ -91,20 +100,22 @@ $(document).ready(function() {
                     //necessarry but saving in case I want to add a button at the
                     //bottom of the page
 
-                    // setTimeout(function() { 
-                    //     $('<button>') // more of the same content button
-                    //         .attr('id', 'moreContent') // targetting
-                    //         .attr('data-searched', string) // the last thing searched
-                    //         .attr('class', 'btn btn-primary btn-block btn-sm') // button styling
-                    //         .text("find more of " + string) // text
-                    //         .appendTo('#gif-div') }, 2000)
+                    setTimeout(function() { 
+                        $('<button>') // more of the same content button
+                            .attr('id', 'moreContent') // targetting
+                            .attr('data-searched', string) // the last thing searched
+                            .attr('class', 'btn btn-primary btn-block btn-sm') // button styling
+                            .text("find more of " + string) // text
+                            .appendTo('#gif-div') }, 2000)
 
         }
 
     //this onClick function will pass the buttons attrivute 'data-nameFull'
     //into our search function and produce results
     $('#button-div').on('click', 'button', function() {// original buttons
-        findGif( $(this).attr('data-nameFull'))
+        tempCount =  parseInt($(this).attr('data-pushCount')) // this updates a buttons count as to how many times it has been pressed
+        $(this).attr('data-pushCount', tempCount++) // this intervals our tempCount and updates the buttons pushcount
+        findGif( $(this).attr('data-nameFull')) // calls function to find the GIFs
     })
 
     //this onClick function will take anything in the search bar and
@@ -152,4 +163,5 @@ $(document).ready(function() {
             .removeClass('gifOnClick') // no longer see through
         $(this).children('.gifText').fadeOut(0) // text disappears
     })
+        
 })

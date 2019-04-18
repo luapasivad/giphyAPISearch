@@ -37,12 +37,20 @@
 
 .gifText {
     position: absolute;
-    bottom: 25px;
-    left: 25px;
     z-index: 10000;
     opacity: .8;
     /* visibility: hidden; */
     display: none;
+}
+
+.title {
+    top: 25px;
+    left: 30px; 
+}
+
+.user {
+    top: 42px;
+    left: 30px;  
 }
 
 .gifOnClick {
