@@ -31,7 +31,7 @@ $(document).ready(function() {
         // tempTitleSplit = tempTitle.split(" ",2) // to add data-name shortened to the first word
         // console.log(titleDisplay)
         $('<button>')
-            .text( titleDisplay ) // .attr('data-name', tempTitleSplit[0])
+            .text( titleDisplay )
             .attr('type', 'submit')
             .attr('data-title', titleDisplay)
             .attr('id', 'button')
@@ -43,7 +43,7 @@ $(document).ready(function() {
 
     function findGif(string) {
 
-        $('#moreContent').remove()
+        $('#moreContent').remove() // remove moreContent buttona as another will be made
 
         var toSearch = string // sets the dynamic api link
         var offset = tempCount * 10 // used to offset search when a button is used again
@@ -101,16 +101,15 @@ $(document).ready(function() {
                     
                 }
             })
-                    //button to add more gifs, didnt work as intended and not
-                    //necessarry but saving in case I want to add a button at the
-                    //bottom of the page
+                    //button to add more gifs of the same topic as what was previously
+                    //selected. Works in conjunction with the buttons on the side
 
-                    setTimeout(function() { 
+                    setTimeout(function() { // on a timer to ensure it happens after the ajax call 
                         $('<button>') // more of the same content button
                             .attr('id', 'moreContent') // targetting
                             .attr('data-searched', string) // the last thing searched
                             .attr('class', 'btn btn-primary btn-block btn-sm') // button styling
-                            .attr('data-pushCount', tempCount)
+                            .attr('data-pushCount', tempCount) // tracks offset
                             .text("find more of " + string) // text
                             .appendTo('#gif-div') 
                         }, 2000)
@@ -120,12 +119,11 @@ $(document).ready(function() {
     //this onClick function will pass the buttons attbivute 'data-title'
     //into our search function and produce results
     buttonDiv.on('click', 'button', function() {// original buttons
-        lastButtonPushed = $(this).attr('data-title')
-        tempCount =  parseInt($(this).attr('data-pushCount')) // this updates a buttons count as to how many times it has been pressed
-        // console.log(tempCount)
+        lastButtonPushed = $(this).attr('data-title') // tracks what sidebar button has been pushed last for the moreContent button
+        tempCount =  parseInt($(this).attr('data-pushCount')) // this updates a buttons count as to how many times it has been pressed in conjunction with the corresponding sidebar button
         findGif( $(this).attr('data-title')) // calls function to find the GIFs
-        tempCount++
-        $(this).attr('data-pushCount', tempCount) // this intervals our tempCount and updates the buttons pushcount
+        tempCount++ // increment for offset
+        $(this).attr('data-pushCount', tempCount) // updates sidebar buttons pushcount
     })
 
     //this onClick function will take anything in the search bar and
@@ -172,17 +170,16 @@ $(document).ready(function() {
         $(this).children('.gifText').fadeOut(0) // text disappears
     })
 
+    //onClick event for the moreContent button, dynamically updates the
+    //tempcount for the offset with whatever the corresponding sidebar
+    //button is. removes itself after clicking and readds a new one after
+    //content is loaded
     gifDiv.on('click', 'button', function() {
-        // tempCount =  parseInt($('#moreContent').attr('data-pushCount')) // this updates a buttons count as to how many times it has been pressed
-        // // $('#moreContent').attr('data-pushCount', tempCount) // this intervals our tempCount and updates the buttons pushcount
-        // console.log(tempCount)
         findGif( $('#moreContent').attr('data-searched')) // calls function to find the GIFs
         tempCount=tempCount+1
         if (lastButtonPushed === $(this).attr('data-searched')) {
             $('[data-title="'+lastButtonPushed+'"').attr('data-pushCount', tempCount)
         }
-        // $('#moreContent').attr('data-pushCount', tempCount)
-
         $(this).remove()
     })
         
