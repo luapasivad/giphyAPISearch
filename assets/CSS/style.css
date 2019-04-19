@@ -41,11 +41,13 @@
     opacity: .8;
     /* visibility: hidden; */
     display: none;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .title {
     top: 25px;
-    left: 30px; 
+    left: 30px;
+    font-weight: bolder
 }
 
 .user {
