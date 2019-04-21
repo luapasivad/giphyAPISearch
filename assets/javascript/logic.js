@@ -4,7 +4,7 @@ $(document).ready(function() {
         buttonDiv = $('#button-div'),
         gifDiv = $('#gif-div'),
         tempCount = 0,
-        apiKey = "ndbwFLDCgCF2OFf18Ngskc2e069zKEFT";
+        apiKey = "9G3OuPXnHCrZrrXjkJJyrzvrl4uwqvdq";
 
     var lastButtonPushed = "";
 
@@ -20,6 +20,13 @@ $(document).ready(function() {
                 var title = starterButtons.data[i].title // get the title for each picture
                 buttonCreate(title)
             }
+
+            $('<div>') // text placed within container
+                .attr('class', 'mt-2 mr-auto ml-auto button-text')
+                .text('Searches')
+                .appendTo(buttonDiv) 
+
+
         })
        
 
@@ -44,10 +51,11 @@ $(document).ready(function() {
     function findGif(string) {
 
         $('#moreContent').remove() // remove moreContent buttona as another will be made
+        //work on removing buttons with title click
 
         var toSearch = string // sets the dynamic api link
-        var offset = tempCount * 10 // used to offset search when a button is used again
-        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key='+ apiKey + '&q=' + toSearch +'&limit=10&offset='+ offset +'&rating=G&lang=en'
+        var offset = tempCount * 20 + 1// used to offset search when a button is used again
+        var queryURL = 'https://api.giphy.com/v1/gifs/search?api_key='+ apiKey + '&q=' + toSearch +'&limit=20&offset='+ offset +'&rating=G&lang=en'
         var gifTarget;
         var tutorial = false; // has the tutorial run
         
@@ -61,17 +69,20 @@ $(document).ready(function() {
             method: "GET"
             }).then(function(response) {
 
-                for (var i=0; i<10; i++) { // takes all 10 results
-                    // console.log(response)
-                    var gifPicture = response.data[i].images.downsized.url // moving URL
-                    var stillPicture = response.data[i].images.downsized_still.url // still URL
-                    var gifName = response.data[i].title.replace(/ GIF.*$/i, ""); // gif title with end cut off
+                for (var i=0; i<20; i++) { // takes all 10 results
+                    console.log(response)
+                    var gifPicture = response.data[i].images.fixed_height.url // moving URL
+                    var stillPicture = response.data[i].images.fixed_height_still.url // still URL
+                    var gifName; // gif title with end cut off
                         gifTarget = response.data[i].id
                     var gifUser;
 
+                    var width = response.data[i].images.downsized.width
+                    var height = response.data[i].images.downsized.height
+
 
                     if (response.data[i].title != "") { // if there is no title
-                        gifName =  response.data[i].title
+                        gifName =  response.data[i].title.replace(/ GIF.*$/i, "")
                     } else {
                         gifName = "untitled"
                     }
@@ -83,30 +94,35 @@ $(document).ready(function() {
                     }
 
                     $('<div>') // container holding each gif and its info
-                        .attr('class', 'gifContainer gif') // targeting
+                        .attr('class', 'col-sm-auto border-0 mt-3 mb-3 mr-auto ml-auto gifContainer') // targeting
+                        // .attr('style', 'height: ' + height + "px")
                         .attr('id', gifTarget)
-                        .appendTo( $(gifDiv) )
+                        .appendTo( $('#gif-div-insert') )
 
                     $('<img>') // prepends them to the screen
                         .attr('src', gifPicture) // picture viewed
-                        .attr('class', 'img-fluid gif') // responsive img
+                        .attr('class', 'card-img img-fluid gif') // responsive img
                         .attr('data-animate', gifPicture) // data animate URL
                         .attr('data-still', stillPicture) // data still URL
                         .attr('data-state', 'animate') // current state
                         .prependTo( $('#' + gifTarget) )
-
-                    $('<div>') // text placed within container
-                        .attr('class', 'gifText user') // targeting & styling
-                        .html(gifUser) // title - user
-                        .prependTo( $('#' + gifTarget) ) // 
-
-                    $('<div>') // text placed within container
-                        .attr('class', 'gifText title') // targeting & styling
-                        .attr('data-title', gifName)
-                        .html(gifName) // title - user
-                        .prependTo( $('#' + gifTarget) ) // 
                     
-                    
+                    $('<div>') // text placed within container
+                        .attr('class', 'title card-img-overlay gifText')
+                        .attr('id', 'text-' + gifTarget) 
+                        .prependTo( $('#' + gifTarget) ) 
+
+                    $('<div>')
+                        .attr('class', 'card-title')
+                        .attr('id', 'title')
+                        .html(gifName)
+                        .appendTo($('#text-' + gifTarget))
+
+                    $('<div>')
+                        .attr('class', 'card-title')
+                        .html(gifUser)
+                        .appendTo($('#text-' + gifTarget))
+
                     
                 }
             })
@@ -117,7 +133,7 @@ $(document).ready(function() {
                         $('<button>') // more of the same content button
                             .attr('id', 'moreContent') // targetting
                             .attr('data-searched', string) // the last thing searched
-                            .attr('class', 'btn btn-primary btn-block btn-sm') // button styling
+                            .attr('class', 'btn btn-primary btn-block btn-sm mb-3') // button styling
                             .attr('data-pushCount', tempCount) // tracks offset
                             .text("find more of " + string) // text
                             .appendTo('#gif-div') 
@@ -157,6 +173,13 @@ $(document).ready(function() {
                 .attr('data-state', 'animate') // changes state
                 .removeClass('gifOnClick') // no longer see through
             $(this).children('.gifText').fadeOut(0) // text disappears 
+
+            console.log('hi')
+            findGif($(this).text().replace(/ GIF.*$/i, ""))
+            tempCount = tempCount + 1
+            $('html, body').animate({
+                scrollTop: $(document).height()
+            }, 'medium');
  
         } else { // if the image has not been clicked already
         
@@ -191,10 +214,4 @@ $(document).ready(function() {
         // }
         $(this).remove()
     })
-
-    gifDiv.on('click', '.title', function() {
-        findGif($(this).text().replace(/ GIF.*$/i, ""))
-        tempCount = tempCount + 1
-    })
-        
 })
