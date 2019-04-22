@@ -1,3 +1,7 @@
+body {
+    color: white;
+}
+
 #search-div {
     padding-top: 15px;
 }
@@ -42,13 +46,19 @@
 }
 
 .gifText {
-    /* position: absolute;
-    z-index: 10000;
-    opacity: .8; */
-    /* visibility: hidden; */
     display: none;
     cursor: pointer;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#title {
+    font-size: 30px;
+    font-style: bolder;
+}
+
+#user {
+    font-size: 20px;
+    font-style: italic;
 }
 
 .gifOnClick {
@@ -57,6 +67,10 @@
     -o-animation: fadeOut 0.5s;
     animation: fadeOut 0.5s;
     opacity: .1;
+}
+
+#save {
+    z-index: 1000;
 }
 
 @-moz-keyframes fadeOut {
@@ -101,11 +115,28 @@
     #button:last-child {
         margin-bottom: 0;
     }
+    .gif {
+        max-height: 60vh;
+        overflow: hidden;
+    }
+    #title {
+        font-size: 50px;
+    }
+    #user {
+        font-size: 35px;
+    }
+    #logo {
+        margin-right: 10px;
+    }
 }
 
 @media (min-width: 576px) {
     .card-columns {
         column-count: 2;
+    }
+    #logo {
+       width: 24%; 
+       text-align: center;
     }
 }
 
