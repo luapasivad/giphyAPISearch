@@ -78,6 +78,7 @@ $(document).ready(function() {
                     var gifUser;
 
                     var width = response.data[i].images.fixed_height.width
+                    var height = response.data[i].images.fixed_height.height
 
 
                     if (response.data[i].title != "") { // if there is no title
@@ -108,6 +109,7 @@ $(document).ready(function() {
                     
                     $('<div>') // overlay for text
                         .attr('class', 'title card-img-overlay gifText')
+                        .attr('style', 'max-height: ' + height + "px")
                         .attr('id', 'text-' + gifTarget) 
                         .prependTo( $('#' + gifTarget) ) 
 
@@ -123,6 +125,10 @@ $(document).ready(function() {
                         .html(gifUser)
                         .appendTo($('#text-' + gifTarget))
                     
+                    $('<button>')
+                        .attr('class', 'btn btn-dark btn-small w-100 save')
+                        .text('save')
+                        .appendTo('#' + gifTarget)
                 }
             })
                     //button to add more gifs of the same topic as what was previously
@@ -181,7 +187,7 @@ $(document).ready(function() {
                 .addClass('gifOnClick') // fadeOut animation
                 .attr('data-state', 'still') // changes state
             $(this).children('.gifText').fadeIn() // display text (title and author)
-                
+            $(this).children('button').toggle(300) 
 
                 
 
@@ -202,16 +208,13 @@ $(document).ready(function() {
     //tempcount for the offset with whatever the corresponding sidebar
     //button is. removes itself after clicking and readds a new one after
     //content is loaded
-    gifDiv.on('click', 'button', function() {
+    gifDiv.on('click', 'button#moreContent', function() {
         findGif( $('#moreContent').attr('data-searched')) // calls function to find the GIFs
         tempCount=tempCount+1 // incrememnt tempCount
         // if (lastButtonPushed === $(this).attr('data-searched')) { 
         $('[data-title="'+lastButtonPushed+'"').attr('data-pushCount', tempCount)
         // }
         $(this).remove()
-    
-    $('#save').on('click', function() {
-        console.log('hi')
     })
-    })
+ 
 })

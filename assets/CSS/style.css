@@ -69,7 +69,12 @@ body {
     opacity: .1;
 }
 
-#save {
+.card-img-overlay {
+    z-index: 999;
+}
+
+.save {
+    display: none;
     z-index: 1000;
 }
 
